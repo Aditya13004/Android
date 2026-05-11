@@ -1,0 +1,227 @@
+///////////////////////// MainActivity.java //////////////////////////
+
+package com.example.dialogmenub400080360;
+
+import android.app.AlertDialog;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button dialogBtn, popupBtn;
+    TextView contextText;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        dialogBtn = findViewById(R.id.dialogBtn);
+        popupBtn = findViewById(R.id.popupBtn);
+        contextText = findViewById(R.id.contextText);
+
+        // Register Context Menu
+        registerForContextMenu(contextText);
+
+        // Alert Dialog
+        dialogBtn.setOnClickListener(v -> {
+
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(MainActivity.this);
+
+            builder.setTitle("Alert Dialog");
+            builder.setMessage("Do you want to continue?");
+
+            builder.setPositiveButton("YES",
+                    (dialog, which) ->
+                            Toast.makeText(MainActivity.this,
+                                    "YES Clicked",
+                                    Toast.LENGTH_SHORT).show());
+
+            builder.setNegativeButton("NO",
+                    (dialog, which) ->
+                            Toast.makeText(MainActivity.this,
+                                    "NO Clicked",
+                                    Toast.LENGTH_SHORT).show());
+
+            builder.show();
+        });
+
+        // Popup Menu
+        popupBtn.setOnClickListener(v -> {
+
+            PopupMenu popupMenu =
+                    new PopupMenu(MainActivity.this, popupBtn);
+
+            popupMenu.getMenuInflater()
+                    .inflate(R.menu.popup_menu,
+                            popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+
+                Toast.makeText(MainActivity.this,
+                        item.getTitle(),
+                        Toast.LENGTH_SHORT).show();
+
+                return true;
+            });
+
+            popupMenu.show();
+        });
+    }
+
+    // OPTION MENU
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.option_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.calculator) {
+
+            Toast.makeText(this,
+                    "Calculator Clicked",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        else if (item.getItemId() == R.id.exit) {
+
+            finish();
+        }
+
+        return true;
+    }
+
+    // CONTEXT MENU
+    @Override
+    public void onCreateContextMenu(ContextMenu menu,
+                                    View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        menu.setHeaderTitle("Context Menu");
+
+        menu.add(0, 1, 0, "Red");
+        menu.add(0, 2, 0, "Blue");
+        menu.add(0, 3, 0, "Green");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        Toast.makeText(this,
+                item.getTitle() + " Selected",
+                Toast.LENGTH_SHORT).show();
+
+        return true;
+    }
+}
+
+
+
+
+
+
+
+/////////////////////// activity_main.xml ////////////////////////
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <Button
+        android:id="@+id/dialogBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Dialog" />
+
+    <Button
+        android:id="@+id/popupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Popup Menu"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/contextText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Long Press Me"
+        android:textSize="24sp"
+        android:padding="20dp"
+        android:layout_marginTop="20dp"/>
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+////////////////////// popup_menu.xml ///////////////////////
+ <?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item1"
+        android:title="Java" />
+
+    <item
+        android:id="@+id/item2"
+        android:title="Android" />
+
+    <item
+        android:id="@+id/item3"
+        android:title="Kotlin" />
+
+</menu>
+
+
+
+
+
+
+//////////////////////// option_menu.xml /////////////////
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/calculator"
+        android:title="Calculator" />
+
+    <item
+        android:id="@+id/exit"
+        android:title="Exit" />
+
+</menu>
