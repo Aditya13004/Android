@@ -2,20 +2,22 @@
 
 package com.example.twofragmentsb400080360;
 
+package com.example.twofragmentappb400080360;
+
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements OnButtonPressListener {
 
-    FragmentTwo fragmentTwo;
+    SecondFragment fragmentTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentOne fragmentOne = new FragmentOne();
-        fragmentTwo = new FragmentTwo();
+        FirstFragment fragmentOne = new FirstFragment();
+        fragmentTwo = new SecondFragment();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_one_container, fragmentOne)
@@ -30,6 +32,14 @@ public class MainActivity extends AppCompatActivity implements OnButtonPressList
         }
     }
 }
+
+
+
+
+
+
+
+
 
 ////////////// activity_main.xml //////////////////////////
 
@@ -50,10 +60,11 @@ public class MainActivity extends AppCompatActivity implements OnButtonPressList
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+    </LinearLayout>
 
-</LinearLayout>
 
-////////////////////// FragmentOne.java /////////////////////
+
+////////////////////// FirstFragment.java /////////////////////
 
 package com.example.twofragmentsb400080360;
 
@@ -62,13 +73,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class FragmentOne extends Fragment {
+public class FirstFragment extends Fragment {
+
+    private EditText editTextData;
+    private Button buttonSend;
     private OnButtonPressListener listener;
+
+    public FirstFragment() {
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -80,39 +97,78 @@ public class FragmentOne extends Fragment {
         }
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_one, container, false);
-        TextView textView = view.findViewById(R.id.text);
-        textView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onButtonPressed("Message From First Fragment");
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(
+                R.layout.fragment_first,
+                container,
+                false);
+
+        editTextData = view.findViewById(R.id.editTextData);
+        buttonSend = view.findViewById(R.id.buttonSend);
+
+        buttonSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String data = editTextData.getText().toString();
+                if (listener != null) {
+                    listener.onButtonPressed(data);
+                }
             }
         });
+
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 }
 
-/////////////////////// fragment_one.xml /////////////////////////////
+
+
+
+
+
+
+
+
+/////////////////////// fragment_first.xml /////////////////////////////
 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DDDDDD"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/text"
+    <EditText
+        android:id="@+id/editTextData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter message" />
+
+    <Button
+        android:id="@+id/buttonSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click"
-        android:textSize="30sp" />
+        android:text="Send to Fragment 2" />
 
 </LinearLayout>
 
-////////////////// FragmentTwo.java ////////////////////////
+
+
+
+
+
+////////////////// SecondFragment.java ////////////////////////
 
 package com.example.twofragmentsb400080360;
 
@@ -125,17 +181,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class FragmentTwo extends Fragment {
+public class SecondFragment extends Fragment {
     private TextView textView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_two, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_second, container, false);
+
+        // Initialize the TextView to display messages
         textView = view.findViewById(R.id.textView);
+
         return view;
     }
 
+    /**
+     * Method called by MainActivity to update the text in this fragment.
+     */
     public void onMessageReceived(String msg) {
         if (textView != null) {
             textView.setText(msg);
@@ -143,7 +206,12 @@ public class FragmentTwo extends Fragment {
     }
 }
 
-/////////////////////// fragment_two.xml //////////////////////////
+
+
+
+
+
+/////////////////////// fragment_second.xml //////////////////////////
 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -160,4 +228,3 @@ public class FragmentTwo extends Fragment {
         android:textSize="30sp" />
 
 </LinearLayout>
-
