@@ -1,0 +1,82 @@
+<<<<<<<<<<<<<<<<<< MainActivity.java >>>>>>>>>>>>>>
+
+package com.example.drawablebuttonappb400080360;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button button = findViewById(R.id.button1);
+        button.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Drawable applied successfully!", Toast.LENGTH_SHORT).show());
+    }
+}
+
+
+
+
+
+<<<<<<<<<<<<<<<<<<< activity_main.xml >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Design a mobile application to create drawable resource and apply it on button."
+        android:textAlignment="center"
+        android:padding="20dp"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Custom Button"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_design"/>
+
+</LinearLayout>
+
+
+
+
+
+
+
+<<<<<<<<<<<<<<<<<<<<< button_design.xml >>>>>>>>>>>>>>>>>>>>>>>>
+
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="#6200EE"/>
+
+    <corners android:radius="20dp"/>
+
+    <stroke
+        android:width="2dp"
+        android:color="#000000"/>
+
+    <padding
+        android:left="10dp"
+        android:top="10dp"
+        android:right="10dp"
+        android:bottom="10dp"/>
+
+</shape>
+
